@@ -1,0 +1,265 @@
+html,
+body,
+#__next {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--app-page-bg, #f6f7fb);
+  color: var(--app-text-color, rgba(17, 24, 39, 0.92));
+}
+
+/* Theme tokens for the admin UI (Semi components are used, but we keep our own app-level surfaces). */
+body[theme-mode="light"] {
+  --app-page-bg: #f6f7fb;
+  --app-surface-bg: #ffffff;
+  --app-surface-border: rgba(17, 24, 39, 0.08);
+  --app-surface-shadow: 0 10px 30px rgba(17, 24, 39, 0.06);
+  --app-text-color: rgba(17, 24, 39, 0.92);
+  --app-muted-color: rgba(17, 24, 39, 0.6);
+  --app-accent-bg: rgba(79, 70, 229, 0.08);
+  --app-accent-border: rgba(79, 70, 229, 0.18);
+}
+
+body[theme-mode="dark"] {
+  --app-page-bg: #0b1020;
+  --app-surface-bg: rgba(17, 24, 39, 0.72);
+  --app-surface-border: rgba(148, 163, 184, 0.14);
+  --app-surface-shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
+  --app-text-color: rgba(248, 250, 252, 0.92);
+  --app-muted-color: rgba(248, 250, 252, 0.58);
+  --app-accent-bg: rgba(99, 102, 241, 0.16);
+  --app-accent-border: rgba(129, 140, 248, 0.22);
+}
+
+/* Public query page */
+.app-public-page {
+  min-height: 100%;
+  background:
+    radial-gradient(1200px 600px at 20% 10%, rgba(99, 102, 241, 0.18), rgba(0, 0, 0, 0) 60%),
+    radial-gradient(1000px 600px at 80% 20%, rgba(16, 185, 129, 0.12), rgba(0, 0, 0, 0) 55%),
+    var(--app-page-bg, #f6f7fb);
+}
+
+body[theme-mode="dark"] .app-public-page {
+  background:
+    radial-gradient(1200px 600px at 20% 10%, rgba(99, 102, 241, 0.22), rgba(0, 0, 0, 0) 60%),
+    radial-gradient(1000px 600px at 80% 20%, rgba(16, 185, 129, 0.14), rgba(0, 0, 0, 0) 55%),
+    var(--app-page-bg, #0b1020);
+}
+
+.app-public-container {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 28px 16px 72px;
+}
+
+.app-public-hero {
+  padding: 18px 16px 6px;
+  text-align: center;
+}
+
+.app-public-grid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+@media (max-width: 920px) {
+  .app-public-grid {
+    grid-template-columns: 1fr;
+  }
+  .app-public-hero {
+    text-align: left;
+  }
+}
+
+.app-public-page .semi-card {
+  border-radius: 16px;
+  border: 1px solid var(--app-surface-border);
+  background: var(--app-surface-bg, #fff);
+  box-shadow: var(--app-surface-shadow);
+}
+
+.app-public-actions {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.app-captcha-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.app-captcha-image {
+  border: 1px solid var(--app-surface-border);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.app-public-result-empty {
+  padding: 10px 0;
+}
+
+.app-query-timeline.semi-timeline {
+  padding: 0;
+}
+
+.app-query-timeline .semi-timeline-item {
+  padding-bottom: 14px;
+}
+
+.app-query-timeline .semi-timeline-item-tail {
+  border-left-color: var(--app-surface-border);
+}
+
+.app-query-timeline .semi-timeline-item-content {
+  margin-left: 18px;
+}
+
+.app-query-record {
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--app-surface-border);
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 10px 26px rgba(17, 24, 39, 0.06);
+}
+
+body[theme-mode="dark"] .app-query-record {
+  background: rgba(2, 6, 23, 0.25);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+}
+
+.app-query-record-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.app-query-record-main {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.app-query-amount {
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: 0.2px;
+}
+
+.app-query-amount-unit {
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+.app-query-amount.pos {
+  color: var(--semi-color-success);
+}
+
+.app-query-amount.neg {
+  color: var(--semi-color-warning);
+}
+
+.app-query-amount.zero {
+  color: var(--app-muted-color);
+}
+
+.app-query-record-remark {
+  margin-top: 10px;
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+@media (max-width: 520px) {
+  .app-query-record-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .app-query-amount {
+    font-size: 17px;
+  }
+}
+
+/* Admin layout container */
+.app-admin-root {
+  background: transparent;
+}
+
+.app-admin-main {
+  min-height: 100%;
+  padding: 20px;
+}
+
+.app-admin-container {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+/* Semi component polish inside admin */
+.app-admin-root .semi-card {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid var(--app-surface-border);
+  background: var(--app-surface-bg);
+  box-shadow: var(--app-surface-shadow);
+}
+
+.app-admin-root .semi-table-container,
+.app-admin-root .semi-table-wrapper {
+  border-radius: 14px;
+}
+
+.app-admin-root .semi-table-row:hover > .semi-table-row-cell {
+  background: var(--app-accent-bg) !important;
+}
+
+.app-page-header {
+  position: relative;
+  overflow: hidden;
+}
+
+.app-page-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(16, 185, 129, 0.08));
+  pointer-events: none;
+}
+
+.app-page-header > .semi-card-body {
+  position: relative;
+}
+
+.app-page-subtitle {
+  color: var(--app-muted-color);
+}
+
+/* Global polish (applies to admin portals like Modal/Dropdown too) */
+.semi-modal-content {
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.semi-dropdown {
+  border-radius: 12px;
+  overflow: hidden;
+}

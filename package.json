@@ -3,24 +3,37 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "create-admin": "node scripts/create-admin.mjs"
   },
   "dependencies": {
+    "@douyinfe/semi-icons": "^2.90.13",
+    "@douyinfe/semi-ui-19": "^2.90.13",
+    "exceljs": "^4.4.0",
+    "formidable": "^3.5.2",
     "next": "16.1.6",
+    "pg": "^8.18.0",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pg": "^8.16.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/formidable": "^3.4.5",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
