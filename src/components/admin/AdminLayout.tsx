@@ -1,16 +1,7 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { Avatar, Button, Dropdown, Layout, LocaleProvider, Nav, Typography } from "@douyinfe/semi-ui-19";
-import {
-  IconCalendar,
-  IconExit,
-  IconHistogram,
-  IconHome,
-  IconKey,
-  IconList,
-  IconSetting,
-  IconUser,
-} from "@douyinfe/semi-icons";
+import { IconCalendar, IconExit, IconHistogram, IconHome, IconKey, IconList, IconSetting, IconUser } from "@douyinfe/semi-icons";
 
 import zhCN from "@douyinfe/semi-ui-19/lib/es/locale/source/zh_CN";
 
@@ -110,6 +101,7 @@ export default function AdminLayout({ children }: Props) {
             footer={{ collapseButton: true }}
           />
         </Sider>
+
         <Layout style={{ background: "transparent" }}>
           <Header
             style={{
@@ -122,9 +114,11 @@ export default function AdminLayout({ children }: Props) {
             }}
           >
             <ThemeToggle />
+
             <Dropdown
               trigger="click"
               position="bottomRight"
+              zIndex={9999}
               render={
                 <Dropdown.Menu>
                   <Dropdown.Item
@@ -142,14 +136,19 @@ export default function AdminLayout({ children }: Props) {
                 </Dropdown.Menu>
               }
             >
-              <Button
-                theme="borderless"
-                icon={<Avatar size="small">{String(username ?? "U").slice(0, 1).toUpperCase()}</Avatar>}
-              >
-                <SpaceText username={username} role={role} />
-              </Button>
+              {/* Wrap with span so the trigger always has a stable DOM node. */}
+              <span style={{ display: "inline-flex" }}>
+                {/* Avoid Button.icon => Semi renders IconButton (tooltip trigger may fail). */}
+                <Button theme="borderless">
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
+                    <Avatar size="small">{String(username ?? "U").slice(0, 1).toUpperCase()}</Avatar>
+                    <UserText username={username} role={role} />
+                  </span>
+                </Button>
+              </span>
             </Dropdown>
           </Header>
+
           <Content className="app-admin-main">
             <div className="app-admin-container">{children}</div>
           </Content>
@@ -159,7 +158,7 @@ export default function AdminLayout({ children }: Props) {
   );
 }
 
-function SpaceText({ username, role }: { username: string; role: AdminRole | null }) {
+function UserText({ username, role }: { username: string; role: AdminRole | null }) {
   return (
     <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
       <IconKey />
