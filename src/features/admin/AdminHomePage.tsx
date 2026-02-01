@@ -7,7 +7,9 @@ import PageHeader from "@/components/admin/PageHeader";
 import { apiJson } from "@/lib/api";
 import { readAdminAuthFromStorage } from "@/lib/auth";
 import { formatDate } from "@/lib/date";
+ 
 import { roleLabel } from "@/lib/permissions";
+ 
 import type { AdminRole } from "@/lib/roles";
 
 const { Title, Text } = Typography;
@@ -123,6 +125,7 @@ export default function AdminHomePage() {
 
     Modal.confirm({
       title: "确认发布？",
+ 
       content: (
         <Space vertical spacing="tight">
           <Text type="tertiary">当前角色：{roleLabel(role)}</Text>
@@ -131,6 +134,7 @@ export default function AdminHomePage() {
           </Text>
         </Space>
       ),
+ 
       okText: "发布",
       cancelText: "取消",
       onOk: async () => {

@@ -29,4 +29,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   return sendXlsx(res, "campaign_items_import_template.xlsx", wb);
 }
-
