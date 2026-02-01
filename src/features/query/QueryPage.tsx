@@ -94,19 +94,21 @@ function StatusBadge({ status }: { status: AmountStatus }) {
   const label = statusLabel(status);
   const icon =
     status === "pos" ? (
-      <IconTickCircle size={14} />
+      <IconTickCircle size="small" />
     ) : status === "neg" ? (
-      <IconAlertCircle size={14} />
+      <IconAlertCircle size="small" />
     ) : status === "zero" ? (
-      <IconMinusCircle size={14} />
+      <IconMinusCircle size="small" />
     ) : (
-      <IconHelpCircle size={14} />
+      <IconHelpCircle size="small" />
     );
 
   return (
-    <Tag color={color} size="small" className="app-status-icon" title={label} aria-label={label}>
-      {icon}
-    </Tag>
+    <span className="app-status-icon-wrap" title={label}>
+      <Tag color={color} size="small" className="app-status-icon" aria-label={label}>
+        {icon}
+      </Tag>
+    </span>
   );
 }
 

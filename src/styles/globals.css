@@ -277,6 +277,10 @@ body[theme-mode="dark"] .app-query-record-mood {
   justify-content: center;
 }
 
+.app-status-icon-wrap {
+  display: inline-flex;
+}
+
 @media (max-width: 520px) {
   .app-query-record-head {
     align-items: flex-start;
