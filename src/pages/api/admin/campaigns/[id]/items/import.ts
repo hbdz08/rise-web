@@ -116,7 +116,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const colIdNo = pickHeaderCol(header, ["身份证号", "身份证号码", "证件号码"], 1);
     const colName = header["姓名(可选)"] ?? header["姓名"] ?? 0;
-    const colAmount = pickHeaderCol(header, ["调薪金额", "涨薪金额", "调薪金额(元)", "涨薪金额(元)"], 2);
+    const colAmount = pickHeaderCol(header, ["调薪金额", "调薪金额", "调薪金额(元)", "调薪金额(元)"], 2);
     const colGrade = pickHeaderCol(header, ["绩效等级(S/A/B/C)", "绩效等级", "绩效(S/A/B/C)"], 3);
     const colRemark = pickHeaderCol(header, ["备注(可选)", "备注"], 4);
 

@@ -197,7 +197,7 @@ export default function AdminHomePage() {
         href: "/admin/employees",
       },
       {
-        title: "涨薪活动",
+        title: "调薪活动",
         desc: "创建活动、录入/导入明细、发布后员工可查",
         icon: <IconCalendar />,
         href: "/admin/campaigns",
@@ -211,7 +211,7 @@ export default function AdminHomePage() {
       },
       {
         title: "统计分析",
-        desc: "查看活动/全局涨薪、降薪排行",
+        desc: "查看活动/全局调薪、降薪排行",
         icon: <IconHistogram />,
         href: "/admin/stats",
       },

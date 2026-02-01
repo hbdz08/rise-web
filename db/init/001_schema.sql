@@ -1,4 +1,4 @@
--- MVP schema for "涨薪系统"
+-- MVP schema for "调薪系统"
 -- Notes:
 -- - PII: id_no_enc/phone_enc are placeholders for encrypted bytes (handled in app layer later).
 -- - id_no_hash is used for uniqueness/query match (HMAC-SHA256 in app layer later).

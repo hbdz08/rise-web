@@ -189,7 +189,7 @@ export default function CampaignsPage() {
   return (
     <Space vertical style={{ width: "100%" }} spacing="medium">
       <PageHeader
-        title="涨薪活动"
+        title="调薪活动"
         subtitle="创建活动、录入明细、发布后员工可查。"
         backHref="/admin"
         backText="返回仪表盘"
@@ -282,7 +282,7 @@ export default function CampaignsPage() {
           </Form.Slot>
           <Form.DatePicker
             field="effectiveDate"
-            label="涨薪生效日期"
+            label="调薪生效日期"
             type="date"
             format="yyyy-MM-dd"
             placeholder="生效日期"

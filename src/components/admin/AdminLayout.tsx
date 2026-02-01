@@ -53,7 +53,7 @@ export default function AdminLayout({ children }: Props) {
     const items: Array<{ itemKey: NavItemKey; text: string; icon: React.ReactNode }> = [
       { itemKey: "/admin", text: "仪表盘", icon: <IconHome /> },
       { itemKey: "/admin/employees", text: "人员管理", icon: <IconUser /> },
-      { itemKey: "/admin/campaigns", text: "涨薪活动", icon: <IconCalendar /> },
+      { itemKey: "/admin/campaigns", text: "调薪活动", icon: <IconCalendar /> },
       { itemKey: "/admin/stats", text: "统计分析", icon: <IconHistogram /> },
       { itemKey: "/admin/audit-logs", text: "审计日志", icon: <IconList /> },
     ];
@@ -78,7 +78,7 @@ export default function AdminLayout({ children }: Props) {
             }}
           >
             <Text strong style={{ fontSize: 16 }}>
-              涨薪系统
+              调薪系统
             </Text>
             <div style={{ marginTop: 6 }}>
               <Text type="tertiary" className="app-page-subtitle">

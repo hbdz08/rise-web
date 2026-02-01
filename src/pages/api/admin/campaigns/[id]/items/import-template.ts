@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const ws = wb.addWorksheet("campaign_items");
 
   ws.addRow(["身份证号", "姓名(可选)", "调薪金额", "绩效等级(S/A/B/C)", "备注(可选)"]);
-  ws.addRow(["110101199001011234", "张三", "500.00", "A", "涨薪示例"]);
+  ws.addRow(["110101199001011234", "张三", "500.00", "A", "调薪示例"]);
   ws.addRow(["110101199001011235", "李四", "-200.00", "B", "降薪示例（可为负数）"]);
 
   ws.columns.forEach((c) => {

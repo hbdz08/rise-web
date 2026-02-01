@@ -34,7 +34,7 @@ export function auditActionLabel(action: string): string {
 
 export function auditEntityLabel(entity: string): string {
   const map: Record<string, string> = {
-    raise_campaigns: "涨薪活动",
+    raise_campaigns: "调薪活动",
     raise_items: "活动明细",
     employees: "人员",
     admin_users: "管理员账号",

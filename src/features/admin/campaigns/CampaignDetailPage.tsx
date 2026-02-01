@@ -251,7 +251,7 @@ export default function CampaignDetailPage() {
           </Form.Slot>
           <Form.DatePicker
             field="effectiveDate"
-            label="涨薪生效日期"
+            label="调薪生效日期"
             type="date"
             format="yyyy-MM-dd"
             placeholder="生效日期"

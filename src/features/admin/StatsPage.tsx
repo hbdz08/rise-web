@@ -40,7 +40,7 @@ type LeaderboardPayload = {
 const { Title, Text } = Typography;
 
 function kindLabel(k: Kind): string {
-  return k === "raise" ? "涨薪" : "降薪";
+  return k === "raise" ? "调薪" : "降薪";
 }
 
 function kindTagColor(k: Kind): "green" | "orange" {
@@ -200,7 +200,7 @@ export default function StatsPage() {
     <Space vertical style={{ width: "100%" }} spacing="medium">
       <PageHeader
         title="统计分析"
-        subtitle="查看某个活动的涨薪/降薪排行，以及所有活动的累计排行。"
+        subtitle="查看某个活动的调薪/降薪排行，以及所有活动的累计排行。"
         backHref="/admin"
         backText="返回仪表盘"
         actions={
@@ -280,7 +280,7 @@ export default function StatsPage() {
                 style={{ width: 140 }}
                 value={campaignKind}
                 optionList={[
-                  { label: "涨薪排行", value: "raise" },
+                  { label: "调薪排行", value: "raise" },
                   { label: "降薪排行", value: "cut" },
                 ]}
                 onChange={(v) => setCampaignKind(String(v) as Kind)}
@@ -324,7 +324,7 @@ export default function StatsPage() {
                 style={{ width: 140 }}
                 value={allKind}
                 optionList={[
-                  { label: "涨薪累计", value: "raise" },
+                  { label: "调薪累计", value: "raise" },
                   { label: "降薪累计", value: "cut" },
                 ]}
                 onChange={(v) => setAllKind(String(v) as Kind)}
