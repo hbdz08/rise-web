@@ -71,6 +71,15 @@ body[theme-mode="dark"] .app-public-page {
   box-shadow: var(--app-surface-shadow);
 }
 
+.app-disclaimer.semi-banner {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.app-disclaimer .semi-banner-description {
+  line-height: 1.75;
+}
+
 .app-public-grid {
   margin-top: 16px;
   display: grid;
@@ -154,13 +163,13 @@ body[theme-mode="dark"] .app-public-page {
 }
 
 .app-query-record.pos {
-  border-color: rgba(16, 185, 129, 0.28);
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(255, 255, 255, 0.78) 45%);
+  border-color: rgba(239, 68, 68, 0.26);
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(255, 255, 255, 0.78) 45%);
 }
 
 .app-query-record.neg {
-  border-color: rgba(239, 68, 68, 0.26);
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(255, 255, 255, 0.78) 45%);
+  border-color: rgba(16, 185, 129, 0.28);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(255, 255, 255, 0.78) 45%);
 }
 
 .app-query-record.zero {
@@ -174,13 +183,13 @@ body[theme-mode="dark"] .app-query-record {
 }
 
 body[theme-mode="dark"] .app-query-record.pos {
-  border-color: rgba(16, 185, 129, 0.26);
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(2, 6, 23, 0.2) 50%);
+  border-color: rgba(239, 68, 68, 0.24);
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.16), rgba(2, 6, 23, 0.2) 50%);
 }
 
 body[theme-mode="dark"] .app-query-record.neg {
-  border-color: rgba(239, 68, 68, 0.24);
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.16), rgba(2, 6, 23, 0.2) 50%);
+  border-color: rgba(16, 185, 129, 0.26);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(2, 6, 23, 0.2) 50%);
 }
 
 body[theme-mode="dark"] .app-query-record.zero {
@@ -216,11 +225,13 @@ body[theme-mode="dark"] .app-query-record.zero {
 }
 
 .app-query-amount.pos {
-  color: var(--semi-color-success);
+  /* Chinese convention: up = red */
+  color: var(--semi-color-danger);
 }
 
 .app-query-amount.neg {
-  color: var(--semi-color-warning);
+  /* Chinese convention: down = green */
+  color: var(--semi-color-success);
 }
 
 .app-query-amount.zero {
@@ -247,11 +258,11 @@ body[theme-mode="dark"] .app-query-record-mood {
 }
 
 .app-query-record-mood.pos {
-  border-color: rgba(16, 185, 129, 0.22);
+  border-color: rgba(239, 68, 68, 0.2);
 }
 
 .app-query-record-mood.neg {
-  border-color: rgba(239, 68, 68, 0.2);
+  border-color: rgba(16, 185, 129, 0.22);
 }
 
 .app-query-record-mood.zero {

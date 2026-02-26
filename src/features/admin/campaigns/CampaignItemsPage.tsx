@@ -7,6 +7,7 @@ import {
   Input,
   InputNumber,
   Modal,
+  Pagination,
   Select,
   Space,
   Table,
@@ -51,6 +52,7 @@ export default function CampaignItemsPage() {
   const router = useRouter();
   const id = String(router.query.id ?? "");
   const campaignId = Number(id);
+  const pageSize = 10;
 
   const [role] = useState<AdminRole | null>(() => {
     if (typeof window === "undefined") return null;
@@ -61,6 +63,9 @@ export default function CampaignItemsPage() {
   const [campaign, setCampaign] = useState<CampaignDetail | null>(null);
   const [items, setItems] = useState<CampaignItemRow[]>([]);
   const [loading, setLoading] = useState(false);
+  const [nameKeyword, setNameKeyword] = useState("");
+  const [deptFilter, setDeptFilter] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [editOpen, setEditOpen] = useState(false);
   const [editSaving, setEditSaving] = useState(false);
@@ -146,6 +151,49 @@ export default function CampaignItemsPage() {
   const isAdmin = role === "HR_ADMIN";
   const canOverride = canAdminOverrideItems(role, status);
   const canEditDraft = canEditDraftItems(status);
+
+  const deptOptions = useMemo(() => {
+    const s = new Set<string>();
+    for (const r of items) {
+      const d = String(r.dept ?? "").trim();
+      if (d) s.add(d);
+    }
+    return Array.from(s)
+      .sort((a, b) => a.localeCompare(b, "zh-Hans-CN"))
+      .map((d) => ({ label: d, value: d }));
+  }, [items]);
+
+  const filteredItems = useMemo(() => {
+    const nk = nameKeyword.trim();
+    const dk = deptFilter.trim();
+    if (!nk && !dk) return items;
+
+    return items.filter((r) => {
+      if (nk && !String(r.name ?? "").includes(nk)) return false;
+      if (dk && String(r.dept ?? "").trim() !== dk) return false;
+      return true;
+    });
+  }, [deptFilter, items, nameKeyword]);
+
+  const pagedItems = useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    const end = start + pageSize;
+    return filteredItems.slice(start, end);
+  }, [currentPage, filteredItems, pageSize]);
+
+  const pageInfo = useMemo(() => {
+    const total = filteredItems.length;
+    if (total <= 0) return { total: 0, start: 0, end: 0 };
+    const start = (currentPage - 1) * pageSize + 1;
+    const end = Math.min(total, currentPage * pageSize);
+    return { total, start, end };
+  }, [currentPage, filteredItems.length, pageSize]);
+
+  useEffect(() => {
+    const total = filteredItems.length;
+    const maxPage = Math.max(1, Math.ceil(total / pageSize));
+    if (currentPage > maxPage) setCurrentPage(maxPage);
+  }, [currentPage, filteredItems.length, pageSize]);
 
   const statusTag = useMemo(() => {
     if (status === "draft") return <Tag color="blue">草稿</Tag>;
@@ -260,64 +308,120 @@ export default function CampaignItemsPage() {
       </Card>
 
       <Card>
-        <Table
-          columns={[
-            { title: "姓名", dataIndex: "name" },
-            { title: "部门", dataIndex: "dept" },
-            { title: "调薪金额(元)", dataIndex: "raiseAmount" },
-            { title: "绩效等级", dataIndex: "performanceGrade" },
-            { title: "备注", dataIndex: "remark" },
-            {
-              title: "操作",
-              dataIndex: "employeeId",
-              render: (_employeeId: number, row: CampaignItemRow) => {
-                if (isDraft) {
-                  return (
-                    <Button
-                      size="small"
-                      type="primary"
-                      onClick={() => {
-                        setEditRow(row);
-                        setEditRaiseAmount(Number(row.raiseAmount ?? 0));
-                        setEditGrade((row.performanceGrade ?? "A") as Grade);
-                        setEditRemark(row.remark ?? "");
-                        setEditOpen(true);
-                      }}
-                    >
-                      {row.itemId ? "编辑" : "录入"}
-                    </Button>
-                  );
-                }
+        <Space style={{ width: "100%", justifyContent: "space-between" }} align="center">
+          <Space wrap>
+            <Input
+              showClear
+              value={nameKeyword}
+              onChange={(v) => setNameKeyword(String(v))}
+              placeholder="按姓名搜索"
+              style={{ width: 220 }}
+            />
+            <Select
+              showClear
+              value={deptFilter || undefined}
+              onChange={(v) => setDeptFilter(String(v ?? ""))}
+              placeholder="选择部门"
+              style={{ width: 220 }}
+              optionList={[{ label: "全部部门", value: "" }, ...deptOptions]}
+            />
+            <Button
+              type="tertiary"
+              onClick={() => {
+                setNameKeyword("");
+                setDeptFilter("");
+                setCurrentPage(1);
+              }}
+            >
+              重置
+            </Button>
+          </Space>
+          <Text type="tertiary" className="app-page-subtitle">
+            显示 {filteredItems.length} / {items.length}
+          </Text>
+        </Space>
 
-                if (canOverride && row.itemId) {
-                  return (
-                    <Button
-                      size="small"
-                      type="warning"
-                      onClick={() => {
-                        setOverrideRow(row);
-                        setOverrideRaiseAmount(Number(row.raiseAmount ?? 0));
-                        setOverrideGrade((row.performanceGrade ?? "A") as Grade);
-                        setOverrideRemark(row.remark ?? "");
-                        setOverrideReason("");
-                        setOverrideOpen(true);
-                      }}
-                    >
-                      修正
-                    </Button>
-                  );
-                }
+        <div style={{ marginTop: 12 }}>
+          <Table
+            columns={[
+              { title: "姓名", dataIndex: "name" },
+              { title: "部门", dataIndex: "dept" },
+              { title: "调薪金额(元)", dataIndex: "raiseAmount" },
+              { title: "绩效等级", dataIndex: "performanceGrade" },
+              { title: "备注", dataIndex: "remark" },
+              {
+                title: "操作",
+                dataIndex: "employeeId",
+                render: (_employeeId: number, row: CampaignItemRow) => {
+                  if (isDraft) {
+                    return (
+                      <Button
+                        size="small"
+                        type="primary"
+                        onClick={() => {
+                          setEditRow(row);
+                          setEditRaiseAmount(Number(row.raiseAmount ?? 0));
+                          setEditGrade((row.performanceGrade ?? "A") as Grade);
+                          setEditRemark(row.remark ?? "");
+                          setEditOpen(true);
+                        }}
+                      >
+                        {row.itemId ? "编辑" : "录入"}
+                      </Button>
+                    );
+                  }
 
-                return <Text type="tertiary">只读</Text>;
+                  if (canOverride && row.itemId) {
+                    return (
+                      <Button
+                        size="small"
+                        type="warning"
+                        onClick={() => {
+                          setOverrideRow(row);
+                          setOverrideRaiseAmount(Number(row.raiseAmount ?? 0));
+                          setOverrideGrade((row.performanceGrade ?? "A") as Grade);
+                          setOverrideRemark(row.remark ?? "");
+                          setOverrideReason("");
+                          setOverrideOpen(true);
+                        }}
+                      >
+                        修正
+                      </Button>
+                    );
+                  }
+
+                  return <Text type="tertiary">只读</Text>;
+                },
               },
-            },
-          ]}
-          dataSource={items}
-          loading={loading}
-          rowKey="employeeId"
-          pagination={{ pageSize: 20 }}
-          empty={<Text type="tertiary">暂无数据</Text>}
-        />
+            ]}
+            dataSource={pagedItems}
+            loading={loading}
+            rowKey="employeeId"
+            pagination={false}
+            empty={<Text type="tertiary">暂无数据</Text>}
+          />
+
+          <Space
+            style={{
+              width: "100%",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginTop: 12,
+            }}
+          >
+            <Text type="tertiary">
+              显示第 {pageInfo.start} 条-第 {pageInfo.end} 条，共 {pageInfo.total} 条
+            </Text>
+            <Pagination
+              total={pageInfo.total}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              showSizeChanger={false}
+              onChange={(p, _ps) => setCurrentPage(Number(p))}
+              onPageChange={(p) => setCurrentPage(Number(p))}
+            />
+          </Space>
+        </div>
       </Card>
 
       <Modal

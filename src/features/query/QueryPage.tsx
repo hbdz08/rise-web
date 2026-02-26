@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Banner, Button, Card, Form, Image, Space, Tag, Timeline, Typography } from "@douyinfe/semi-ui-19";
-import { IconAlertCircle, IconHelpCircle, IconMinusCircle, IconRefresh, IconTickCircle } from "@douyinfe/semi-icons";
+import { IconAlertCircle, IconHelpCircle, IconMinusCircle, IconRefresh, IconStar, IconTickCircle } from "@douyinfe/semi-icons";
 
 import { formatDate } from "@/lib/date";
 
@@ -83,17 +83,20 @@ function statusLabel(s: AmountStatus): string {
 }
 
 function statusTagColor(s: AmountStatus): "green" | "red" | "blue" | "grey" {
-  if (s === "pos") return "green";
-  if (s === "neg") return "red";
+  // Chinese convention: up = red, down = green
+  if (s === "pos") return "red";
+  if (s === "neg") return "green";
   if (s === "zero") return "blue";
   return "grey";
 }
 
-function StatusBadge({ status }: { status: AmountStatus }) {
+function StatusBadge({ status, variant }: { status: AmountStatus; variant?: "summary" | "record" }) {
   const color = statusTagColor(status);
   const label = statusLabel(status);
   const icon =
-    status === "pos" ? (
+    variant === "summary" ? (
+      <IconStar size="small" />
+    ) : status === "pos" ? (
       <IconTickCircle size="small" />
     ) : status === "neg" ? (
       <IconAlertCircle size="small" />
@@ -145,11 +148,12 @@ function formatAdjust(raiseAmount: string | null): { typeLabel: string; amountTe
   return { typeLabel: "不变", amountText: "0.00" };
 }
 
-function adjustTagColor(raiseAmount: string): "green" | "orange" | "grey" {
+function adjustTagColor(raiseAmount: string): "red" | "green" | "grey" {
   const n = Number(raiseAmount);
   if (!Number.isFinite(n)) return "grey";
-  if (n > 0) return "green";
-  if (n < 0) return "orange";
+  // Chinese convention: up = red, down = green
+  if (n > 0) return "red";
+  if (n < 0) return "green";
   return "grey";
 }
 
@@ -357,6 +361,27 @@ export default function QueryPage() {
 
         <div className="app-public-grid">
           <Card>
+            <Banner
+              type="warning"
+              fullMode={false}
+              bordered
+              closeIcon={null}
+              className="app-disclaimer"
+              title="重要提示（请务必阅读）"
+              description={
+                <Space vertical spacing="tight">
+                  <Text>
+                    本次薪资调整为公司基于岗位价值、工作表现、项目贡献及团队发展需要进行的阶段性综合评估结果，属于周期性激励调整，并不构成未来薪酬固定增长承诺。
+                  </Text>
+                  <Text>薪酬调整主要依据当前周期内工作完成质量、岗位支撑能力、主动性表现及团队协作情况等多维度因素确定。</Text>
+                  <Text>后续薪酬水平将继续结合公司经营情况、岗位价值变化及个人综合表现进行动态评估。</Text>
+                  <Text type="danger">
+                    公司鼓励员工持续提升专业能力与工作贡献，但薪酬调整不以单一指标或单周期结果作为长期固定标准。无论涨薪与降薪或不变都属公司核心机密，需严格保密，严禁私自透露或询问他人薪资，经查实有违规情况，下周期取消涨薪评估，并取消过往所有涨薪金额。
+                  </Text>
+                </Space>
+              }
+              style={{ marginBottom: 12 }}
+            />
             <Form
               onSubmit={async (values) => {
                 setLoading(true);
@@ -461,11 +486,12 @@ export default function QueryPage() {
                         fullMode={false}
                         bordered
                         closeIcon={null}
-                        type={resultSummary.status === "pos" ? "success" : resultSummary.status === "neg" ? "danger" : "info"}
+                        type={resultSummary.status === "pos" ? "danger" : resultSummary.status === "neg" ? "success" : "info"}
+                        icon={<IconStar size="large" />}
                         title={
                           <Space spacing="tight">
                             <Text strong>{resultSummary.title}</Text>
-                            <StatusBadge status={resultSummary.status} />
+                            <StatusBadge status={resultSummary.status} variant="summary" />
                           </Space>
                         }
                         description={
